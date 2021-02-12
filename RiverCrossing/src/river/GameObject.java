@@ -6,22 +6,20 @@ public class GameObject {
 
     protected String name;
     protected Location location;
+    protected String sound;
 
     public GameObject() {
 
     }
 
-    public GameObject(String name, Location location){
+    public GameObject(String name, String sound){
         this.name = name;
-        this.location = location;
+        this.location = location.START;
+        this.sound = sound;
     }
 
-    public String getName() {
+    public String getName(){
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
     
     public Location getLocation() {
@@ -33,14 +31,7 @@ public class GameObject {
     }
 
     public String getSound() {
-        switch (name) {
-        case "Wolf":
-            return "Howl";
-        case "Goose":
-            return "Honk";
-        default:
-            return "";
-        }
+        return sound;
     }
 
 }

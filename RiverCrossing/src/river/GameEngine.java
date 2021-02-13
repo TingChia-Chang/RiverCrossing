@@ -1,14 +1,15 @@
 package river;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GameEngine {
 
-    public enum Item {
-        WOLF, GOOSE, BEANS, FARMER;
-    }
-
+    public static final Item WOLF = Item.ITEM_2;
+    public static final Item GOOSE = Item.ITEM_1;
+    public static final Item BEANS = Item.ITEM_0;
+    public static final Item FARMER = Item.ITEM_3;
     private Location boatLocation;
     final private Map<Item, GameObject> gameObjectMap;
     private int itemsOnBoat;
@@ -17,29 +18,29 @@ public class GameEngine {
         boatLocation = Location.START;
         itemsOnBoat = 0;
         gameObjectMap = new HashMap<>();
-        GameObject wolf = new GameObject("Wolf", "Howl");
-        GameObject goose = new GameObject("Goose", "Honk");
-        GameObject beans = new GameObject("Beans", "");
-        GameObject farmer = new GameObject("Farmer", "");
+        GameObject wolf = new GameObject("Wolf", Color.CYAN);
+        GameObject goose = new GameObject("Goose", Color.CYAN);
+        GameObject beans = new GameObject("Beans", Color.CYAN);
+        GameObject farmer = new GameObject("Farmer", Color.MAGENTA);
 
-        gameObjectMap.put(Item.WOLF, wolf);
-        gameObjectMap.put(Item.GOOSE, goose);
-        gameObjectMap.put(Item.BEANS, beans);
-        gameObjectMap.put(Item.FARMER, farmer);
+        gameObjectMap.put(WOLF, wolf);
+        gameObjectMap.put(GOOSE, goose);
+        gameObjectMap.put(BEANS, beans);
+        gameObjectMap.put(FARMER, farmer);
 
 
     }
 
-    public String getItemName(Item id) {
-        return gameObjectMap.get(id).name;
+    public String getItemLabel(Item id) {
+        return gameObjectMap.get(id).label;
     }
 
     public Location getItemLocation(Item id) {
         return gameObjectMap.get(id).getLocation();
     }
 
-    public String getItemSound(Item id) {
-        return gameObjectMap.get(id).getSound();
+    public Color getItemColor(Item id) {
+        return gameObjectMap.get(id).getColor();
     }
 
     public Location getBoatLocation() {
@@ -81,10 +82,10 @@ public class GameEngine {
     }
 
     public boolean gameIsLost() {
-        Location gooseLocation = gameObjectMap.get(Item.GOOSE).getLocation();
-        Location wolfLocation = gameObjectMap.get(Item.WOLF).getLocation();
-        Location beansLocation = gameObjectMap.get(Item.BEANS).getLocation();
-        Location farmerLocation = gameObjectMap.get(Item.FARMER).getLocation();
+        Location gooseLocation = gameObjectMap.get(GOOSE).getLocation();
+        Location wolfLocation = gameObjectMap.get(WOLF).getLocation();
+        Location beansLocation = gameObjectMap.get(BEANS).getLocation();
+        Location farmerLocation = gameObjectMap.get(FARMER).getLocation();
 
         if (gooseLocation == Location.BOAT || gooseLocation == boatLocation || gooseLocation == farmerLocation){
             return false;

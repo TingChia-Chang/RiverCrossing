@@ -123,6 +123,49 @@ public class RiverGUI extends JPanel implements MouseListener {
         boatRec = getBoatRec();
     }
 
+    public void paintItems(Graphics g){
+        for(Item item : itemRecs.keySet()){
+            paintStringInRectangle(engine.getItemLabel(item), g, engine.getItemColor(item), getItemRec(item));
+        }
+    }
+
+    private void paintBoat(Graphics g){
+        Rectangle rec = getBoatRec();
+        paintStringInRectangle("", g, Color.ORANGE, rec);
+    }
+
+    public void paintMessage(String message, Graphics g) {
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Verdana", Font.BOLD, 36));
+        FontMetrics fm = g.getFontMetrics();
+        int strXCoord = 400 - fm.stringWidth(message) / 2;
+        int strYCoord = 100;
+        g.drawString(message, strXCoord, strYCoord);
+    }
+
+    public void paintRestartButton(Graphics g) {
+        g.setColor(Color.BLACK);
+        paintBorder(restartButtonRect, 3, g);
+        g.setColor(Color.PINK);
+        paintStringInRectangle("RESTART", g, Color.PINK, restartButtonRect);
+    }
+
+    public void paintBorder(Rectangle r, int thickness, Graphics g) {
+        g.fillRect(r.x - thickness, r.y - thickness, r.width + (2 * thickness), r.height + (2 * thickness));
+    }
+
+    public void paintStringInRectangle(String str, Graphics g, Color color, Rectangle rect) {
+        g.setColor(color);
+        g.fillRect(rect.x, rect.y, rect.width, rect.height);
+        g.setColor(Color.BLACK);
+        int fontSize = (rect.height >= 40) ? 36 : 18;
+        g.setFont(new Font("Verdana", Font.BOLD, fontSize));
+        FontMetrics fm = g.getFontMetrics();
+        int strXCoord = rect.x + rect.width / 2 - fm.stringWidth(str) / 2;
+        int strYCoord = rect.y + rect.height / 2 + fontSize / 2 - 4;
+        g.drawString(str, strXCoord, strYCoord);
+    }
+
     public Rectangle getItemRec(Item item){
         Rectangle rec;
         int index = item.ordinal();
@@ -160,132 +203,99 @@ public class RiverGUI extends JPanel implements MouseListener {
         }
     }
 
-    public void paintObjectsOnLeft(Graphics g) {
+//    public void paintObjectsOnLeft(Graphics g) {
+//
+//        if (engine.getItemLocation(Item.ITEM_3) == Location.START) {
+//            g.setColor(Color.MAGENTA);
+//            g.fillRect(80, 215, 50, 50);
+//        }
+//        if (engine.getItemLocation(Item.ITEM_2) == Location.START) {
+//            g.setColor(Color.CYAN);
+//            g.fillRect(20, 215, 50, 50);
+//            paintStringInRectangle("W", 20, 215, 50, 50, g);
+//        }
+//        if (engine.getItemLocation(Item.ITEM_1) == Location.START) {
+//            g.setColor(Color.CYAN);
+//            g.fillRect(20, 275, 50, 50);
+//            paintStringInRectangle("G", 20, 275, 50, 50, g);
+//        }
+//        if (engine.getItemLocation(Item.ITEM_0) == Location.START) {
+//            g.setColor(Color.CYAN);
+//            g.fillRect(80, 275, 50, 50);
+//            paintStringInRectangle("B", 80, 275, 50, 50, g);
+//        }
+//    }
+//
+//    public void paintObjectsOnRight(Graphics g) {
+//
+//        if (engine.getItemLocation(Item.ITEM_3) == Location.FINISH) {
+//            g.setColor(Color.MAGENTA);
+//            g.fillRect(730, 215, 50, 50);
+//        }
+//        if (engine.getItemLocation(Item.ITEM_2) == Location.FINISH) {
+//            g.setColor(Color.CYAN);
+//            g.fillRect(670, 215, 50, 50);
+//            paintStringInRectangle("W", 670, 215, 50, 50, g);
+//        }
+//        if (engine.getItemLocation(Item.ITEM_1) == Location.FINISH) {
+//            g.setColor(Color.CYAN);
+//            g.fillRect(670, 275, 50, 50);
+//            paintStringInRectangle("G", 670, 275, 50, 50, g);
+//        }
+//        if (engine.getItemLocation(Item.ITEM_0) == Location.FINISH) {
+//            g.setColor(Color.CYAN);
+//            g.fillRect(730, 275, 50, 50);
+//            paintStringInRectangle("B", 730, 275, 50, 50, g);
+//        }
+//    }
 
-        if (engine.getItemLocation(Item.ITEM_3) == Location.START) {
-            g.setColor(Color.MAGENTA);
-            g.fillRect(80, 215, 50, 50);
-        }
-        if (engine.getItemLocation(Item.ITEM_2) == Location.START) {
-            g.setColor(Color.CYAN);
-            g.fillRect(20, 215, 50, 50);
-            paintStringInRectangle("W", 20, 215, 50, 50, g);
-        }
-        if (engine.getItemLocation(Item.ITEM_1) == Location.START) {
-            g.setColor(Color.CYAN);
-            g.fillRect(20, 275, 50, 50);
-            paintStringInRectangle("G", 20, 275, 50, 50, g);
-        }
-        if (engine.getItemLocation(Item.ITEM_0) == Location.START) {
-            g.setColor(Color.CYAN);
-            g.fillRect(80, 275, 50, 50);
-            paintStringInRectangle("B", 80, 275, 50, 50, g);
-        }
-    }
-
-    public void paintObjectsOnRight(Graphics g) {
-
-        if (engine.getItemLocation(Item.ITEM_3) == Location.FINISH) {
-            g.setColor(Color.MAGENTA);
-            g.fillRect(730, 215, 50, 50);
-        }
-        if (engine.getItemLocation(Item.ITEM_2) == Location.FINISH) {
-            g.setColor(Color.CYAN);
-            g.fillRect(670, 215, 50, 50);
-            paintStringInRectangle("W", 670, 215, 50, 50, g);
-        }
-        if (engine.getItemLocation(Item.ITEM_1) == Location.FINISH) {
-            g.setColor(Color.CYAN);
-            g.fillRect(670, 275, 50, 50);
-            paintStringInRectangle("G", 670, 275, 50, 50, g);
-        }
-        if (engine.getItemLocation(Item.ITEM_0) == Location.FINISH) {
-            g.setColor(Color.CYAN);
-            g.fillRect(730, 275, 50, 50);
-            paintStringInRectangle("B", 730, 275, 50, 50, g);
-        }
-    }
-
-    public void paintObjectsOnBoat(Graphics g) {
-        if (engine.getBoatLocation() == Location.START) {
-            g.setColor(Color.ORANGE);
-            g.fillRect(140, 275, 110, 50);
-            if (engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
-                g.setColor(Color.MAGENTA);
-                g.fillRect(140, 215, 50, 50);
-            }
-            if (engine.getItemLocation(Item.ITEM_2) == Location.BOAT) {
-                g.setColor(Color.CYAN);
-                g.fillRect(200, 215, 50, 50);
-                paintStringInRectangle("W", 200, 215, 50, 50, g);
-            } else if (engine.getItemLocation(Item.ITEM_1) == Location.BOAT) {
-                g.setColor(Color.CYAN);
-                g.fillRect(200, 215, 50, 50);
-                paintStringInRectangle("G", 200, 215, 50, 50, g);
-            } else if (engine.getItemLocation(Item.ITEM_0) == Location.BOAT) {
-                g.setColor(Color.CYAN);
-                g.fillRect(200, 215, 50, 50);
-                paintStringInRectangle("B", 200, 215, 50, 50, g);
-            }
-        }
-        if (engine.getBoatLocation() == Location.FINISH) {
-            g.setColor(Color.ORANGE);
-            g.fillRect(550, 275, 110, 50);
-            if (engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
-                g.setColor(Color.MAGENTA);
-                g.fillRect(550, 215, 50, 50);
-            }
-            if (engine.getItemLocation(Item.ITEM_2) == Location.BOAT) {
-                g.setColor(Color.CYAN);
-                g.fillRect(610, 215, 50, 50);
-                paintStringInRectangle("W", 610, 215, 50, 50, g);
-            } else if (engine.getItemLocation(Item.ITEM_1) == Location.BOAT) {
-                g.setColor(Color.CYAN);
-                g.fillRect(610, 215, 50, 50);
-                paintStringInRectangle("G", 610, 215, 50, 50, g);
-            } else if (engine.getItemLocation(Item.ITEM_0) == Location.BOAT) {
-                g.setColor(Color.CYAN);
-                g.fillRect(610, 215, 50, 50);
-                paintStringInRectangle("B", 610, 215, 50, 50, g);
-            }
-        }
-    }
-
-    public void paintStringInRectangle(String str, int x, int y, int width, int height, Graphics g) {
-        g.setColor(Color.BLACK);
-        int fontSize = (height >= 40) ? 36 : 18;
-        g.setFont(new Font("Verdana", Font.BOLD, fontSize));
-        FontMetrics fm = g.getFontMetrics();
-        int strXCoord = x + width / 2 - fm.stringWidth(str) / 2;
-        int strYCoord = y + height / 2 + fontSize / 2 - 4;
-        g.drawString(str, strXCoord, strYCoord);
-    }
-
-    public void paintMessage(String message, Graphics g) {
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Verdana", Font.BOLD, 36));
-        FontMetrics fm = g.getFontMetrics();
-        int strXCoord = 400 - fm.stringWidth(message) / 2;
-        int strYCoord = 100;
-        g.drawString(message, strXCoord, strYCoord);
-    }
-
-    public void paintRestartButton(Graphics g) {
-        g.setColor(Color.BLACK);
-        paintBorder(restartButtonRect, 3, g);
-        g.setColor(Color.PINK);
-        paintRectangle(restartButtonRect, g);
-        paintStringInRectangle("Restart", restartButtonRect.x, restartButtonRect.y, restartButtonRect.width,
-                restartButtonRect.height, g);
-    }
-
-    public void paintBorder(Rectangle r, int thickness, Graphics g) {
-        g.fillRect(r.x - thickness, r.y - thickness, r.width + (2 * thickness), r.height + (2 * thickness));
-    }
-
-    public void paintRectangle(Rectangle r, Graphics g) {
-        g.fillRect(r.x, r.y, r.width, r.height);
-    }
+//    public void paintObjectsOnBoat(Graphics g) {
+//        if (engine.getBoatLocation() == Location.START) {
+//            g.setColor(Color.ORANGE);
+//            g.fillRect(140, 275, 110, 50);
+//            if (engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
+//                g.setColor(Color.MAGENTA);
+//                g.fillRect(140, 215, 50, 50);
+//            }
+//            if (engine.getItemLocation(Item.ITEM_2) == Location.BOAT) {
+//                g.setColor(Color.CYAN);
+//                g.fillRect(200, 215, 50, 50);
+//                paintStringInRectangle("W", 200, 215, 50, 50, g);
+//            } else if (engine.getItemLocation(Item.ITEM_1) == Location.BOAT) {
+//                g.setColor(Color.CYAN);
+//                g.fillRect(200, 215, 50, 50);
+//                paintStringInRectangle("G", 200, 215, 50, 50, g);
+//            } else if (engine.getItemLocation(Item.ITEM_0) == Location.BOAT) {
+//                g.setColor(Color.CYAN);
+//                g.fillRect(200, 215, 50, 50);
+//                paintStringInRectangle("B", 200, 215, 50, 50, g);
+//            }
+//        }
+//        if (engine.getBoatLocation() == Location.FINISH) {
+//            g.setColor(Color.ORANGE);
+//            g.fillRect(550, 275, 110, 50);
+//            if (engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
+//                g.setColor(Color.MAGENTA);
+//                g.fillRect(550, 215, 50, 50);
+//            }
+//            if (engine.getItemLocation(Item.ITEM_2) == Location.BOAT) {
+//                g.setColor(Color.CYAN);
+//                g.fillRect(610, 215, 50, 50);
+//                paintStringInRectangle("W", 610, 215, 50, 50, g);
+//            } else if (engine.getItemLocation(Item.ITEM_1) == Location.BOAT) {
+//                g.setColor(Color.CYAN);
+//                g.fillRect(610, 215, 50, 50);
+//                paintStringInRectangle("G", 610, 215, 50, 50, g);
+//            } else if (engine.getItemLocation(Item.ITEM_0) == Location.BOAT) {
+//                g.setColor(Color.CYAN);
+//                g.fillRect(610, 215, 50, 50);
+//                paintStringInRectangle("B", 610, 215, 50, 50, g);
+//            }
+//        }
+//    }
+//    public void paintRectangle(Rectangle r, Graphics g) {
+//        g.fillRect(r.x, r.y, r.width, r.height);
+//    }
 
     // ==========================================================
     // Startup Methods

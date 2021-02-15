@@ -113,6 +113,16 @@ public class RiverGUI extends JPanel implements MouseListener {
 
     }
 
+    private void refreshItemRectangles(){
+        for(Item item: itemRecs.keySet()){
+            itemRecs.put(item, getItemRec(item));
+        }
+    }
+
+    private void refreshBoatRectangles(){
+        boatRec = getBoatRec();
+    }
+
     public Rectangle getItemRec(Item item){
         Rectangle rec;
         int index = item.ordinal();
@@ -140,6 +150,14 @@ public class RiverGUI extends JPanel implements MouseListener {
         }
 
         return rec;
+    }
+
+    private Rectangle getBoatRec(){
+        if(engine.getBoatLocation() == Location.START){
+            return new Rectangle(leftBoatX, leftBoatY, boatWidth, boatHeight);
+        }else{
+            return new Rectangle(rightBoatX, rightBoatY, boatWidth, boatHeight);
+        }
     }
 
     public void paintObjectsOnLeft(Graphics g) {

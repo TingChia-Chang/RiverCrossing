@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -21,22 +23,22 @@ public class RiverGUI extends JPanel implements MouseListener {
     // Fields (hotspots)
     // ==========================================================
 
-    private final Rectangle leftFarmerRect = new Rectangle(80, 215, 50, 50);
-    private final Rectangle leftWolfRect = new Rectangle(20, 215, 50, 50);
-    private final Rectangle leftGooseRect = new Rectangle(20, 275, 50, 50);
-    private final Rectangle leftBeansRect = new Rectangle(80, 275, 50, 50);
-    private final Rectangle leftBoatRect = new Rectangle(140, 275, 110, 50);
-    private final Rectangle leftBoatDriverRect = new Rectangle(140, 215, 50, 50);
-    private final Rectangle leftBoatPassengerRect = new Rectangle(200, 215, 50, 50);
-
-    private final Rectangle rightFarmerRect = new Rectangle(730, 215, 50, 50);
-    private final Rectangle rightWolfRect = new Rectangle(670, 215, 50, 50);
-    private final Rectangle rightGooseRect = new Rectangle(670, 275, 50, 50);
-    private final Rectangle rightBeansRect = new Rectangle(730, 275, 50, 50);
-    private final Rectangle rightBoatRect = new Rectangle(550, 275, 110, 50);
-    private final Rectangle rightBoatDriverRect = new Rectangle(550, 215, 50, 50);
-    private final Rectangle rightBoatPassengerRect = new Rectangle(610, 215, 50, 50);
-
+//    private final Rectangle leftFarmerRect = new Rectangle(80, 215, 50, 50);
+//    private final Rectangle leftWolfRect = new Rectangle(20, 215, 50, 50);
+//    private final Rectangle leftGooseRect = new Rectangle(20, 275, 50, 50);
+//    private final Rectangle leftBeansRect = new Rectangle(80, 275, 50, 50);
+//    private final Rectangle leftBoatRect = new Rectangle(140, 275, 110, 50);
+//    private final Rectangle leftBoatDriverRect = new Rectangle(140, 215, 50, 50);
+//    private final Rectangle leftBoatPassengerRect = new Rectangle(200, 215, 50, 50);
+//
+//    private final Rectangle rightFarmerRect = new Rectangle(730, 215, 50, 50);
+//    private final Rectangle rightWolfRect = new Rectangle(670, 215, 50, 50);
+//    private final Rectangle rightGooseRect = new Rectangle(670, 275, 50, 50);
+//    private final Rectangle rightBeansRect = new Rectangle(730, 275, 50, 50);
+//    private final Rectangle rightBoatRect = new Rectangle(550, 275, 110, 50);
+//    private final Rectangle rightBoatDriverRect = new Rectangle(550, 215, 50, 50);
+//    private final Rectangle rightBoatPassengerRect = new Rectangle(610, 215, 50, 50);
+    private Rectangle boatRec;
     private final Rectangle restartButtonRect = new Rectangle(350, 120, 100, 30);
 
     // ==========================================================
@@ -45,6 +47,27 @@ public class RiverGUI extends JPanel implements MouseListener {
 
     private GameEngine engine; // Model
     private boolean restart = false;
+    private Map<Item, Rectangle> itemRecs;
+    int[] dx = {0, 60, 0, 60};
+    int[] dy = {0, 0, -60, -60};
+
+    private int leftBaseX = 20;
+    private int leftBaseY = 275;
+    private int leftBoatX = 140;
+    private int leftBoatY = 275;
+
+    private int rightBaseX = 670;
+    private int rightBaseY = 275;
+    private int rightBoatX = 550;
+    private int rightBoatY = 275;
+
+    private int rectHeight = 50;
+    private int rectWidth = 50;
+    private int boatHeight = 50;
+    private int boatWidth = 110;
+
+    private Item passenger1, passenger2;
+
 
     // ==========================================================
     // Constructor
@@ -54,6 +77,11 @@ public class RiverGUI extends JPanel implements MouseListener {
 
         engine = new GameEngine();
         addMouseListener(this);
+        itemRecs = new HashMap<>();
+        itemRecs.put(Item.ITEM_0, new Rectangle());
+        itemRecs.put(Item.ITEM_1, new Rectangle());
+        itemRecs.put(Item.ITEM_2, new Rectangle());
+        itemRecs.put(Item.ITEM_3, new Rectangle());
     }
 
     // ==========================================================
@@ -83,6 +111,35 @@ public class RiverGUI extends JPanel implements MouseListener {
             paintRestartButton(g);
         }
 
+    }
+
+    public Rectangle getItemRec(Item item){
+        Rectangle rec;
+        int index = item.ordinal();
+        Location loc = engine.getItemLocation(item);
+        Location boatLoc = engine.getBoatLocation();
+
+        if(loc == Location.START){
+            rec = new Rectangle(leftBaseX + dx[index], leftBaseY + dy[index], rectWidth, rectHeight);
+        }else if(loc == Location.FINISH){
+            rec = new Rectangle(rightBaseX + dx[index], rightBaseY + dy[index], rectWidth, rectHeight);
+        }else{
+            if(boatLoc == Location.START){
+                if(item == passenger1){
+                    return new Rectangle(leftBoatX, leftBoatY - 60, rectWidth, rectHeight);
+                }else{
+                    return new Rectangle(leftBoatX + 60, leftBoatY - 60, rectWidth, rectHeight);
+                }
+            }else{
+                if(item == passenger1){
+                    return new Rectangle(rightBoatX, rightBoatY - 60, rectWidth, rectHeight);
+                }else{
+                    return new Rectangle(rightBoatX + 60, rightBoatY - 60, rectWidth, rectHeight);
+                }
+            }
+        }
+
+        return rec;
     }
 
     public void paintObjectsOnLeft(Graphics g) {

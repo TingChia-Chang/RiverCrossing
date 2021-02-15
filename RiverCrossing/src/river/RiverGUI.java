@@ -91,12 +91,14 @@ public class RiverGUI extends JPanel implements MouseListener {
     @Override
     public void paintComponent(Graphics g) {
 
+        refreshItemRectangles();
+        refreshBoatRectangles();
+
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-        paintObjectsOnLeft(g);
-        paintObjectsOnRight(g);
-        paintObjectsOnBoat(g);
+        paintItems(g);
+        paintBoat(g);
         String message = "";
         if (engine.gameIsLost()) {
             message = "You Lost!";
@@ -125,12 +127,14 @@ public class RiverGUI extends JPanel implements MouseListener {
 
     public void paintItems(Graphics g){
         for(Item item : itemRecs.keySet()){
+            paintRectangle(getItemRec(item), g);
             paintStringInRectangle(engine.getItemLabel(item), g, engine.getItemColor(item), getItemRec(item));
         }
     }
 
     private void paintBoat(Graphics g){
         Rectangle rec = getBoatRec();
+        paintRectangle(rec, g);
         paintStringInRectangle("", g, Color.ORANGE, rec);
     }
 
@@ -147,6 +151,7 @@ public class RiverGUI extends JPanel implements MouseListener {
         g.setColor(Color.BLACK);
         paintBorder(restartButtonRect, 3, g);
         g.setColor(Color.PINK);
+        paintRectangle(restartButtonRect, g);
         paintStringInRectangle("RESTART", g, Color.PINK, restartButtonRect);
     }
 
@@ -154,9 +159,13 @@ public class RiverGUI extends JPanel implements MouseListener {
         g.fillRect(r.x - thickness, r.y - thickness, r.width + (2 * thickness), r.height + (2 * thickness));
     }
 
+    public void paintRectangle(Rectangle r, Graphics g) {
+        g.fillRect(r.x, r.y, r.width, r.height);
+    }
+
     public void paintStringInRectangle(String str, Graphics g, Color color, Rectangle rect) {
         g.setColor(color);
-        g.fillRect(rect.x, rect.y, rect.width, rect.height);
+//        g.fillRect(rect.x, rect.y, rect.width, rect.height);
         g.setColor(Color.BLACK);
         int fontSize = (rect.height >= 40) ? 36 : 18;
         g.setFont(new Font("Verdana", Font.BOLD, fontSize));
@@ -293,9 +302,7 @@ public class RiverGUI extends JPanel implements MouseListener {
 //            }
 //        }
 //    }
-//    public void paintRectangle(Rectangle r, Graphics g) {
-//        g.fillRect(r.x, r.y, r.width, r.height);
-//    }
+
 
     // ==========================================================
     // Startup Methods

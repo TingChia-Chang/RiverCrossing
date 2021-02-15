@@ -346,83 +346,50 @@ public class RiverGUI extends JPanel implements MouseListener {
             if (this.restartButtonRect.contains(e.getPoint())) {
                 engine.resetGame();
                 restart = false;
+                passenger1 = null;
+                passenger2 = null;
                 repaint();
             }
             return;
         }
 
-        if (leftFarmerRect.contains(e.getPoint())) {
-            if (engine.getItemLocation(Item.ITEM_3) == Location.START) {
-                engine.loadBoat(Item.ITEM_3);
-            }
-        } else if (leftWolfRect.contains(e.getPoint())) {
-            if (engine.getItemLocation(Item.ITEM_2) == Location.START) {
-                engine.loadBoat(Item.ITEM_2);
-            }
-        } else if (leftGooseRect.contains(e.getPoint())) {
-            if (engine.getItemLocation(Item.ITEM_1) == Location.START) {
-                engine.loadBoat(Item.ITEM_1);
-            }
-        } else if (leftBeansRect.contains(e.getPoint())) {
-            if (engine.getItemLocation(Item.ITEM_0) == Location.START) {
-                engine.loadBoat(Item.ITEM_0);
-            }
-        } else if (leftBoatDriverRect.contains(e.getPoint())) {
-            if (engine.getBoatLocation() == Location.START && engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
-                engine.unloadBoat(Item.ITEM_3);
-            }
-        } else if (leftBoatPassengerRect.contains(e.getPoint())) {
-            if (engine.getBoatLocation() == Location.START) {
-                if (engine.getItemLocation(Item.ITEM_2) == Location.BOAT) {
-                    engine.unloadBoat(Item.ITEM_2);
-                } else if (engine.getItemLocation(Item.ITEM_1) == Location.BOAT) {
-                    engine.unloadBoat(Item.ITEM_1);
-                } else if (engine.getItemLocation(Item.ITEM_0) == Location.BOAT) {
-                    engine.unloadBoat(Item.ITEM_0);
+        for(Map.Entry<Item, Rectangle> entry : itemRecs.entrySet()){
+            Item item = entry.getKey();
+            Rectangle rec = entry.getValue();
+            Location loc = engine.getItemLocation(item);
+            if(rec.contains(e.getPoint())){
+                if(loc == Location.BOAT){
+                    engine.unloadBoat(item);
+                    removePassenger(item);
+                }else if(loc == engine.getBoatLocation()){
+                    engine.loadBoat(item);
+                    setPassenger(item);
                 }
+                repaint();
+                return;
             }
-        } else if (leftBoatRect.contains(e.getPoint())) {
-            if (engine.getBoatLocation() == Location.START && engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
-                engine.rowBoat();
-            }
-        } else if (rightFarmerRect.contains(e.getPoint())) {
-            if (engine.getItemLocation(Item.ITEM_3) == Location.FINISH) {
-                engine.loadBoat(Item.ITEM_3);
-            }
-        } else if (rightWolfRect.contains(e.getPoint())) {
-            if (engine.getItemLocation(Item.ITEM_2) == Location.FINISH) {
-                engine.loadBoat(Item.ITEM_2);
-            }
-        } else if (rightGooseRect.contains(e.getPoint())) {
-            if (engine.getItemLocation(Item.ITEM_1) == Location.FINISH) {
-                engine.loadBoat(Item.ITEM_1);
-            }
-        } else if (rightBeansRect.contains(e.getPoint())) {
-            if (engine.getItemLocation(Item.ITEM_0) == Location.FINISH) {
-                engine.loadBoat(Item.ITEM_0);
-            }
-        } else if (rightBoatDriverRect.contains(e.getPoint())) {
-            if (engine.getBoatLocation() == Location.FINISH && engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
-                engine.unloadBoat(Item.ITEM_3);
-            }
-        } else if (rightBoatPassengerRect.contains(e.getPoint())) {
-            if (engine.getBoatLocation() == Location.FINISH) {
-                if (engine.getItemLocation(Item.ITEM_2) == Location.BOAT) {
-                    engine.unloadBoat(Item.ITEM_2);
-                } else if (engine.getItemLocation(Item.ITEM_1) == Location.BOAT) {
-                    engine.unloadBoat(Item.ITEM_1);
-                } else if (engine.getItemLocation(Item.ITEM_0) == Location.BOAT) {
-                    engine.unloadBoat(Item.ITEM_0);
-                }
-            }
-        } else if (rightBoatRect.contains(e.getPoint())) {
-            if (engine.getBoatLocation() == Location.FINISH && engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
-                engine.rowBoat();
-            }
-        } else {
-            return;
+        }
+
+        if(boatRec.contains(e.getPoint()) && engine.getItemLocation(Item.ITEM_3) == Location.BOAT){
+            engine.rowBoat();
         }
         repaint();
+    }
+
+    public void setPassenger(Item item){
+        if(this.passenger1 == null){
+            this.passenger1 = item;
+        }else{
+            this.passenger2 = item;
+        }
+    }
+
+    private void removePassenger(Item passenger){
+        if(passenger == passenger1){
+            this.passenger1 = null;
+        }else{
+            this.passenger2 = null;
+        }
     }
 
     // ----------------------------------------------------------

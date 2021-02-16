@@ -22,22 +22,6 @@ public class RiverGUI extends JPanel implements MouseListener {
     // ==========================================================
     // Fields (hotspots)
     // ==========================================================
-
-//    private final Rectangle leftFarmerRect = new Rectangle(80, 215, 50, 50);
-//    private final Rectangle leftWolfRect = new Rectangle(20, 215, 50, 50);
-//    private final Rectangle leftGooseRect = new Rectangle(20, 275, 50, 50);
-//    private final Rectangle leftBeansRect = new Rectangle(80, 275, 50, 50);
-//    private final Rectangle leftBoatRect = new Rectangle(140, 275, 110, 50);
-//    private final Rectangle leftBoatDriverRect = new Rectangle(140, 215, 50, 50);
-//    private final Rectangle leftBoatPassengerRect = new Rectangle(200, 215, 50, 50);
-//
-//    private final Rectangle rightFarmerRect = new Rectangle(730, 215, 50, 50);
-//    private final Rectangle rightWolfRect = new Rectangle(670, 215, 50, 50);
-//    private final Rectangle rightGooseRect = new Rectangle(670, 275, 50, 50);
-//    private final Rectangle rightBeansRect = new Rectangle(730, 275, 50, 50);
-//    private final Rectangle rightBoatRect = new Rectangle(550, 275, 110, 50);
-//    private final Rectangle rightBoatDriverRect = new Rectangle(550, 215, 50, 50);
-//    private final Rectangle rightBoatPassengerRect = new Rectangle(610, 215, 50, 50);
     private Rectangle boatRec;
     private final Rectangle restartButtonRect = new Rectangle(350, 120, 100, 30);
 
@@ -48,6 +32,7 @@ public class RiverGUI extends JPanel implements MouseListener {
     private GameEngine engine; // Model
     private boolean restart = false;
     private Map<Item, Rectangle> itemRecs;
+    private Item passenger1, passenger2;
     int[] dx = {0, 60, 0, 60};
     int[] dy = {0, 0, -60, -60};
 
@@ -65,10 +50,6 @@ public class RiverGUI extends JPanel implements MouseListener {
     private int rectWidth = 50;
     private int boatHeight = 50;
     private int boatWidth = 110;
-
-    private Item passenger1, passenger2;
-
-
     // ==========================================================
     // Constructor
     // ==========================================================
@@ -127,52 +108,13 @@ public class RiverGUI extends JPanel implements MouseListener {
 
     public void paintItems(Graphics g){
         for(Item item : itemRecs.keySet()){
-            paintRectangle(getItemRec(item), g);
             paintStringInRectangle(engine.getItemLabel(item), g, engine.getItemColor(item), getItemRec(item));
         }
     }
 
     private void paintBoat(Graphics g){
         Rectangle rec = getBoatRec();
-        paintRectangle(rec, g);
         paintStringInRectangle("", g, Color.ORANGE, rec);
-    }
-
-    public void paintMessage(String message, Graphics g) {
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Verdana", Font.BOLD, 36));
-        FontMetrics fm = g.getFontMetrics();
-        int strXCoord = 400 - fm.stringWidth(message) / 2;
-        int strYCoord = 100;
-        g.drawString(message, strXCoord, strYCoord);
-    }
-
-    public void paintRestartButton(Graphics g) {
-        g.setColor(Color.BLACK);
-        paintBorder(restartButtonRect, 3, g);
-        g.setColor(Color.PINK);
-        paintRectangle(restartButtonRect, g);
-        paintStringInRectangle("RESTART", g, Color.PINK, restartButtonRect);
-    }
-
-    public void paintBorder(Rectangle r, int thickness, Graphics g) {
-        g.fillRect(r.x - thickness, r.y - thickness, r.width + (2 * thickness), r.height + (2 * thickness));
-    }
-
-    public void paintRectangle(Rectangle r, Graphics g) {
-        g.fillRect(r.x, r.y, r.width, r.height);
-    }
-
-    public void paintStringInRectangle(String str, Graphics g, Color color, Rectangle rect) {
-        g.setColor(color);
-//        g.fillRect(rect.x, rect.y, rect.width, rect.height);
-        g.setColor(Color.BLACK);
-        int fontSize = (rect.height >= 40) ? 36 : 18;
-        g.setFont(new Font("Verdana", Font.BOLD, fontSize));
-        FontMetrics fm = g.getFontMetrics();
-        int strXCoord = rect.x + rect.width / 2 - fm.stringWidth(str) / 2;
-        int strYCoord = rect.y + rect.height / 2 + fontSize / 2 - 4;
-        g.drawString(str, strXCoord, strYCoord);
     }
 
     public Rectangle getItemRec(Item item){
@@ -212,96 +154,37 @@ public class RiverGUI extends JPanel implements MouseListener {
         }
     }
 
-//    public void paintObjectsOnLeft(Graphics g) {
-//
-//        if (engine.getItemLocation(Item.ITEM_3) == Location.START) {
-//            g.setColor(Color.MAGENTA);
-//            g.fillRect(80, 215, 50, 50);
-//        }
-//        if (engine.getItemLocation(Item.ITEM_2) == Location.START) {
-//            g.setColor(Color.CYAN);
-//            g.fillRect(20, 215, 50, 50);
-//            paintStringInRectangle("W", 20, 215, 50, 50, g);
-//        }
-//        if (engine.getItemLocation(Item.ITEM_1) == Location.START) {
-//            g.setColor(Color.CYAN);
-//            g.fillRect(20, 275, 50, 50);
-//            paintStringInRectangle("G", 20, 275, 50, 50, g);
-//        }
-//        if (engine.getItemLocation(Item.ITEM_0) == Location.START) {
-//            g.setColor(Color.CYAN);
-//            g.fillRect(80, 275, 50, 50);
-//            paintStringInRectangle("B", 80, 275, 50, 50, g);
-//        }
-//    }
-//
-//    public void paintObjectsOnRight(Graphics g) {
-//
-//        if (engine.getItemLocation(Item.ITEM_3) == Location.FINISH) {
-//            g.setColor(Color.MAGENTA);
-//            g.fillRect(730, 215, 50, 50);
-//        }
-//        if (engine.getItemLocation(Item.ITEM_2) == Location.FINISH) {
-//            g.setColor(Color.CYAN);
-//            g.fillRect(670, 215, 50, 50);
-//            paintStringInRectangle("W", 670, 215, 50, 50, g);
-//        }
-//        if (engine.getItemLocation(Item.ITEM_1) == Location.FINISH) {
-//            g.setColor(Color.CYAN);
-//            g.fillRect(670, 275, 50, 50);
-//            paintStringInRectangle("G", 670, 275, 50, 50, g);
-//        }
-//        if (engine.getItemLocation(Item.ITEM_0) == Location.FINISH) {
-//            g.setColor(Color.CYAN);
-//            g.fillRect(730, 275, 50, 50);
-//            paintStringInRectangle("B", 730, 275, 50, 50, g);
-//        }
-//    }
+    public void paintStringInRectangle(String str, Graphics g, Color color, Rectangle rect) {
+        g.setColor(color);
+        g.fillRect(rect.x, rect.y, rect.width, rect.height);
+        g.setColor(Color.BLACK);
+        int fontSize = (rect.height >= 40) ? 36 : 18;
+        g.setFont(new Font("Verdana", Font.BOLD, fontSize));
+        FontMetrics fm = g.getFontMetrics();
+        int strXCoord = rect.x + rect.width / 2 - fm.stringWidth(str) / 2;
+        int strYCoord = rect.y + rect.height / 2 + fontSize / 2 - 4;
+        g.drawString(str, strXCoord, strYCoord);
+    }
 
-//    public void paintObjectsOnBoat(Graphics g) {
-//        if (engine.getBoatLocation() == Location.START) {
-//            g.setColor(Color.ORANGE);
-//            g.fillRect(140, 275, 110, 50);
-//            if (engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
-//                g.setColor(Color.MAGENTA);
-//                g.fillRect(140, 215, 50, 50);
-//            }
-//            if (engine.getItemLocation(Item.ITEM_2) == Location.BOAT) {
-//                g.setColor(Color.CYAN);
-//                g.fillRect(200, 215, 50, 50);
-//                paintStringInRectangle("W", 200, 215, 50, 50, g);
-//            } else if (engine.getItemLocation(Item.ITEM_1) == Location.BOAT) {
-//                g.setColor(Color.CYAN);
-//                g.fillRect(200, 215, 50, 50);
-//                paintStringInRectangle("G", 200, 215, 50, 50, g);
-//            } else if (engine.getItemLocation(Item.ITEM_0) == Location.BOAT) {
-//                g.setColor(Color.CYAN);
-//                g.fillRect(200, 215, 50, 50);
-//                paintStringInRectangle("B", 200, 215, 50, 50, g);
-//            }
-//        }
-//        if (engine.getBoatLocation() == Location.FINISH) {
-//            g.setColor(Color.ORANGE);
-//            g.fillRect(550, 275, 110, 50);
-//            if (engine.getItemLocation(Item.ITEM_3) == Location.BOAT) {
-//                g.setColor(Color.MAGENTA);
-//                g.fillRect(550, 215, 50, 50);
-//            }
-//            if (engine.getItemLocation(Item.ITEM_2) == Location.BOAT) {
-//                g.setColor(Color.CYAN);
-//                g.fillRect(610, 215, 50, 50);
-//                paintStringInRectangle("W", 610, 215, 50, 50, g);
-//            } else if (engine.getItemLocation(Item.ITEM_1) == Location.BOAT) {
-//                g.setColor(Color.CYAN);
-//                g.fillRect(610, 215, 50, 50);
-//                paintStringInRectangle("G", 610, 215, 50, 50, g);
-//            } else if (engine.getItemLocation(Item.ITEM_0) == Location.BOAT) {
-//                g.setColor(Color.CYAN);
-//                g.fillRect(610, 215, 50, 50);
-//                paintStringInRectangle("B", 610, 215, 50, 50, g);
-//            }
-//        }
-//    }
+    public void paintMessage(String message, Graphics g) {
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Verdana", Font.BOLD, 36));
+        FontMetrics fm = g.getFontMetrics();
+        int strXCoord = 400 - fm.stringWidth(message) / 2;
+        int strYCoord = 100;
+        g.drawString(message, strXCoord, strYCoord);
+    }
+
+    public void paintRestartButton(Graphics g) {
+        g.setColor(Color.BLACK);
+        paintBorder(restartButtonRect, 3, g);
+        g.setColor(Color.PINK);
+        paintStringInRectangle("RESTART", g, Color.PINK, restartButtonRect);
+    }
+
+    public void paintBorder(Rectangle r, int thickness, Graphics g) {
+        g.fillRect(r.x - thickness, r.y - thickness, r.width + (2 * thickness), r.height + (2 * thickness));
+    }
 
 
     // ==========================================================

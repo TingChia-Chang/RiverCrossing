@@ -18,10 +18,10 @@ public class GameEngine {
         boatLocation = Location.START;
         itemsOnBoat = 0;
         gameObjectMap = new HashMap<>();
-        GameObject wolf = new GameObject("Wolf", Color.CYAN);
-        GameObject goose = new GameObject("Goose", Color.CYAN);
-        GameObject beans = new GameObject("Beans", Color.CYAN);
-        GameObject farmer = new GameObject("Farmer", Color.MAGENTA);
+        GameObject wolf = new GameObject("W", Color.CYAN);
+        GameObject goose = new GameObject("G", Color.CYAN);
+        GameObject beans = new GameObject("B", Color.CYAN);
+        GameObject farmer = new GameObject("", Color.MAGENTA);
 
         gameObjectMap.put(WOLF, wolf);
         gameObjectMap.put(GOOSE, goose);
@@ -103,6 +103,7 @@ public class GameEngine {
             object.setLocation(Location.START);
         }
         boatLocation = Location.START;
+        itemsOnBoat = 0;
     }
 
 }

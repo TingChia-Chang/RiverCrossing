@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.awt.*;
 
-public class GameEngineTest {
+public class FarmerGameEngineTest {
 
     public static final Item FARMER = Item.ITEM_3;
     public static final Item WOLF = Item.ITEM_2;
@@ -15,7 +15,7 @@ public class GameEngineTest {
     GameEngine engine;
     @Before
     public void setUp() throws Exception {
-        engine = new GameEngine();
+        engine = new FarmerGameEngine();
     }
 
     public void transport(Item item) {

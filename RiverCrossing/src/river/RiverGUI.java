@@ -23,7 +23,8 @@ public class RiverGUI extends JPanel implements MouseListener {
     // Fields (hotspots)
     // ==========================================================
     private Rectangle boatRec;
-    private final Rectangle restartButtonRect = new Rectangle(350, 120, 100, 30);
+    private final Rectangle restartFarmerButtonRect = new Rectangle(295, 120, 100, 30);
+    private final Rectangle restartRobotButtonRect = new Rectangle(405, 120, 100, 30);
 
     // ==========================================================
     // Private Fields
@@ -177,9 +178,11 @@ public class RiverGUI extends JPanel implements MouseListener {
 
     public void paintRestartButton(Graphics g) {
         g.setColor(Color.BLACK);
-        paintBorder(restartButtonRect, 3, g);
-        g.setColor(Color.PINK);
-        paintStringInRectangle("RESTART", g, Color.PINK, restartButtonRect);
+        paintBorder(restartFarmerButtonRect, 3, g);
+        paintStringInRectangle("Farmer", g, Color.PINK, restartFarmerButtonRect);
+
+        paintBorder(restartRobotButtonRect, 3, g);
+        paintStringInRectangle("Robot", g, Color.PINK, restartRobotButtonRect);
     }
 
     public void paintBorder(Rectangle r, int thickness, Graphics g) {
@@ -226,13 +229,16 @@ public class RiverGUI extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
 
         if (restart) {
-            if (this.restartButtonRect.contains(e.getPoint())) {
-                engine.resetGame();
-                restart = false;
-                passenger1 = null;
-                passenger2 = null;
-                repaint();
+            if (this.restartFarmerButtonRect.contains(e.getPoint())) {
+                engine = new FarmerGameEngine();
+            } else if (this.restartRobotButtonRect.contains(e.getPoint())){
+                engine = new RobotGameEngine();
             }
+            restart = false;
+            passenger1 = null;
+            passenger2 = null;
+            repaint();
+
             return;
         }
 
@@ -253,7 +259,7 @@ public class RiverGUI extends JPanel implements MouseListener {
             }
         }
 
-        if(boatRec.contains(e.getPoint()) && engine.getItemLocation(Item.ITEM_3) == Location.BOAT){
+        if(boatRec.contains(e.getPoint())){
             engine.rowBoat();
         }
         repaint();
@@ -262,7 +268,7 @@ public class RiverGUI extends JPanel implements MouseListener {
     public void setPassenger(Item item){
         if(this.passenger1 == null){
             this.passenger1 = item;
-        }else{
+        }else if(this.passenger2 == null){
             this.passenger2 = item;
         }
     }
@@ -270,7 +276,7 @@ public class RiverGUI extends JPanel implements MouseListener {
     private void removePassenger(Item passenger){
         if(passenger == passenger1){
             this.passenger1 = null;
-        }else{
+        }else if(passenger == passenger2){
             this.passenger2 = null;
         }
     }

@@ -26,19 +26,19 @@ public class FarmerGameEngineTest {
 
     @Test
     public void testObjectCallThroughs() {
-        Assert.assertEquals("Farmer", engine.getItemLabel(FARMER));
+        Assert.assertEquals("", engine.getItemLabel(FARMER));
         Assert.assertEquals(Location.START, engine.getItemLocation(FARMER));
         Assert.assertEquals(Color.MAGENTA, engine.getItemColor(FARMER));
         /* TODO Check getters for wolf, goose, and beans */
-        Assert.assertEquals("Wolf", engine.getItemLabel(WOLF));
+        Assert.assertEquals("W", engine.getItemLabel(WOLF));
         Assert.assertEquals(Location.START, engine.getItemLocation(WOLF));
         Assert.assertEquals(Color.CYAN, engine.getItemColor(WOLF));
 
-        Assert.assertEquals("Goose", engine.getItemLabel(GOOSE));
+        Assert.assertEquals("G", engine.getItemLabel(GOOSE));
         Assert.assertEquals(Location.START, engine.getItemLocation(GOOSE));
         Assert.assertEquals(Color.CYAN, engine.getItemColor(GOOSE));
 
-        Assert.assertEquals("Beans", engine.getItemLabel(BEANS));
+        Assert.assertEquals("B", engine.getItemLabel(BEANS));
         Assert.assertEquals(Location.START, engine.getItemLocation(BEANS));
         Assert.assertEquals(Color.CYAN, engine.getItemColor(BEANS));
     }

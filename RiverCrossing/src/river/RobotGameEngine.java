@@ -4,30 +4,29 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FarmerGameEngine implements GameEngine {
+public class RobotGameEngine implements GameEngine{
 
-    public static final Item WOLF = Item.ITEM_2;
-    public static final Item GOOSE = Item.ITEM_1;
-    public static final Item BEANS = Item.ITEM_0;
-    public static final Item FARMER = Item.ITEM_3;
+    public static final Item SMALLBOT_1 = Item.ITEM_0;
+    public static final Item SMALLBOT_2 = Item.ITEM_1;
+    public static final Item TALLBOT_1 = Item.ITEM_2;
+    public static final Item TALLBOT_2 = Item.ITEM_3;
     private Location boatLocation;
     final private Map<Item, GameObject> gameObjectMap;
 
-    public FarmerGameEngine() {
+    public RobotGameEngine() {
         boatLocation = Location.START;
         gameObjectMap = new HashMap<>();
-        GameObject wolf = new GameObject("W", Color.CYAN);
-        GameObject goose = new GameObject("G", Color.CYAN);
-        GameObject beans = new GameObject("B", Color.CYAN);
-        GameObject farmer = new GameObject("", Color.MAGENTA);
+        GameObject smallbot_1 = new GameObject("S1", Color.CYAN);
+        GameObject smallbot_2 = new GameObject("S2", Color.CYAN);
+        GameObject tallbot_1 = new GameObject("T1", Color.MAGENTA);
+        GameObject tallbot_2 = new GameObject("T2", Color.MAGENTA);
 
-        gameObjectMap.put(WOLF, wolf);
-        gameObjectMap.put(GOOSE, goose);
-        gameObjectMap.put(BEANS, beans);
-        gameObjectMap.put(FARMER, farmer);
-
-
+        gameObjectMap.put(SMALLBOT_1, smallbot_1);
+        gameObjectMap.put(SMALLBOT_2, smallbot_2);
+        gameObjectMap.put(TALLBOT_1, tallbot_1);
+        gameObjectMap.put(TALLBOT_2, tallbot_2);
     }
+
 
     @Override
     public String getItemLabel(Item id) {
@@ -52,8 +51,12 @@ public class FarmerGameEngine implements GameEngine {
     @Override
     public void loadBoat(Item id) {
         GameObject object = gameObjectMap.get(id);
-        if(getNumOfItemsOnBoat() < 2 && object.getLocation() == boatLocation){
-            object.setLocation(Location.BOAT);
+        if(object.getLocation() == boatLocation){
+            if((id == Item.ITEM_0 || id == Item.ITEM_1) && getNumOfItemsOnBoat() < 2){
+                object.setLocation(Location.BOAT);
+            } else if ((id == Item.ITEM_2 || id == Item.ITEM_3) && getNumOfItemsOnBoat() == 0) {
+                object.setLocation(Location.BOAT);
+            }
         }
     }
 
@@ -87,19 +90,6 @@ public class FarmerGameEngine implements GameEngine {
 
     @Override
     public boolean gameIsLost() {
-        Location gooseLocation = gameObjectMap.get(GOOSE).getLocation();
-        Location wolfLocation = gameObjectMap.get(WOLF).getLocation();
-        Location beansLocation = gameObjectMap.get(BEANS).getLocation();
-        Location farmerLocation = gameObjectMap.get(FARMER).getLocation();
-
-        if (gooseLocation == Location.BOAT || gooseLocation == boatLocation || gooseLocation == farmerLocation){
-            return false;
-        }
-
-        if (gooseLocation == wolfLocation || gooseLocation == beansLocation){
-            return true;
-        }
-
         return false;
     }
 
@@ -116,11 +106,14 @@ public class FarmerGameEngine implements GameEngine {
 
         for(Item item : gameObjectMap.keySet()){
             if(getItemLocation(item) == Location.BOAT){
-                itemOnBoat++;
+                if(item == Item.ITEM_0 || item == Item.ITEM_1){
+                    itemOnBoat++;
+                }else{
+                    itemOnBoat+=2;
+                }
             }
         }
 
         return itemOnBoat;
     }
-
 }

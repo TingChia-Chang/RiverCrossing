@@ -68,6 +68,9 @@ public class FarmerGameEngine implements GameEngine {
     @Override
     public void rowBoat() {
         assert (boatLocation != Location.BOAT);
+        if(getItemLocation(FARMER) != Location.BOAT){
+            return;
+        }
         if (boatLocation == Location.START) {
             boatLocation = Location.FINISH;
         } else {
